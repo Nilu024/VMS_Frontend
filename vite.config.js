@@ -7,24 +7,18 @@ import path from "path";
 export default defineConfig(({ mode }) => {
   // load all env variables for current mode
   const env = loadEnv(mode, process.cwd(), "");
-  let backendUrl = env.VITE_BACKEND_URL;
+  let backendUrl = env.VITE_BACKEND_URL || '';
 
-  // if we're building for production, always use relative paths
-  if (mode === 'production') {
-    if (backendUrl) {
-      console.warn(
-        `Production build ignoring VITE_BACKEND_URL="${backendUrl}". ` +
-        'API requests will use relative `/api` path.'
-      );
-    }
-    backendUrl = ''; // force relative
+  // if building for production without an explicit backend URL, use relative paths
+  if (mode === 'production' && !backendUrl) {
+    console.log('Production build: using relative /api URLs');
   }
 
   // log backend URL for debugging
   console.log("VITE_BACKEND_URL=", backendUrl || '(relative)');
-  if (mode !== 'production' && !backendUrl) {
+  if (!backendUrl && mode !== 'production') {
     console.warn(
-      "No backend URL defined; API proxy will not work. Check your .env file and restart vite."
+      "No backend URL defined; API proxy may not work. Check your .env file and restart vite."
     );
   }
 

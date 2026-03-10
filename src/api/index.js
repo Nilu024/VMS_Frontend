@@ -1,21 +1,25 @@
 import axios from 'axios';
 
 // prefer proxy in development, but if it's not working we can hit the backend directly
-// determine base URL for API calls
-// - during development, use proxy (`/api`) or explicit backend URL
-// - in production always use relative `/api` so frontend and backend can be co-hosted
-let backendBase = '';
-if (import.meta.env.DEV) {
-  backendBase = import.meta.env.VITE_BACKEND_URL || '';
-  if (!backendBase) {
-    console.warn('VITE_BACKEND_URL is not set; requests will go to the same origin via proxy.');
-  }
+// determine base URL for API calls based on environment variable
+// if VITE_BACKEND_URL is provided (in dev or prod) use it; otherwise fall
+// back to relative `/api` which works when backend is co-hosted.
+let backendBase = import.meta.env.VITE_BACKEND_URL || '';
+if (!backendBase && import.meta.env.DEV) {
+  console.warn('VITE_BACKEND_URL not set; using dev proxy (/api)');
+}
+if (backendBase) {
+  // strip trailing slash if present
+  backendBase = backendBase.replace(/\/+$/, '');
 }
 
 const api = axios.create({
   baseURL: backendBase ? `${backendBase}/api` : '/api',
   headers: { 'Content-Type': 'application/json' }
 });
+
+// log out the final base URL for easier debugging
+console.log('axios baseURL =', api.defaults.baseURL);
 
 // Attach token to every request
 api.interceptors.request.use((config) => {
