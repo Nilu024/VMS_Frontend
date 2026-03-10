@@ -175,17 +175,6 @@ export default function LoginPage() {
             </SubmitButton>
           </form>
 
-          {/* Credentials hint */}
-          <div className="mt-5 p-4 rounded-xl"
-            style={{ background: 'hsl(230 70% 55% / 0.07)', border: '1px dashed hsl(230 70% 55% / 0.25)' }}>
-            <p style={{ fontSize: '0.72rem', fontWeight: 600, color: 'hsl(230 60% 50%)', marginBottom: '4px' }}>Default Admin Login</p>
-            <p style={{ fontSize: '0.8rem', color: 'hsl(220 15% 40%)' }}>
-              Username:{' '}
-              <code style={{ fontFamily: 'DM Mono, monospace', background: 'white', padding: '1px 6px', borderRadius: '4px', fontSize: '0.78rem' }}>admin</code>
-              {' '}Password:{' '}
-              <code style={{ fontFamily: 'DM Mono, monospace', background: 'white', padding: '1px 6px', borderRadius: '4px', fontSize: '0.78rem' }}>admin123</code>
-            </p>
-          </div>
         </div>
       </div>
     </div>
